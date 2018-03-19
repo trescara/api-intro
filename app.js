@@ -5,10 +5,27 @@ const characterSection = document.querySelector('.characters')
 getLuke()
 
 
+function getLuke() {
+
+  fetch(baseUrl + 'people/1')
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(data) {
+      var name = data.name
+
+      // Create an h2 that has the text of 
+      // Luke's name
+      var skywalker = document.createElement('h2')
+      skywalker.innerText = name
+
+      // Append that h2 to the section
+      // w/the class .characters
+      characterSection.appendChild(skywalker)
+    })
+
+}
+
 // Modify the getLuke function to also add:
   // Luke's hair color
   // Luke's height
-
-function getLuke() {
-
-}
