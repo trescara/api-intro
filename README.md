@@ -13,3 +13,7 @@
 ## Resources
 
 - [Public APIs](https://github.com/toddmotto/public-apis#photography)
+
+## Solutions
+
+- Switch to one of the 'breakout' branches to see completed code
