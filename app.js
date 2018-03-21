@@ -105,3 +105,46 @@ function getCharacters() {
   // <h3> with the character's name
   // <ul> with  <li>s for hair color and height
   // Check out the innerHTML method
+
+// ---------- NESTED FETCH REQUESTS / PASSING DATA TO NEXT .THEN ----------
+
+// Write a function called getMoreCharacters that:
+  // Accepts a url as an input
+  // Makes a fetch requests to that url
+  // console.logs the result
+
+
+// Refactor the getCharacters function to:
+  // Return the url of the next page of characters to another .then
+  // Call the getMoreCharacters function and pass it the url
+
+
+// Modify the getMoreCharacters function to:
+  // Append sections to the DOM similar to the getCharacters function
+    // Container element (<div> or <section>)
+    // <h3> with the character's name
+    // <ul> with  <li>s for hair color and height
+    // Check out the innerHTML method
+
+
+// ---------- REFACTOR FETCH REQUESTS TO USE ES6 SYNTAX ----------
+
+// Refactor the getLuke function to use:
+  // Fat arrow functions
+  // Implicit returns
+
+
+// Refactor the getCharacters function to use:
+  // Fat arrow functions
+  // Implicit returns
+
+
+// ---------- REFACTOR FETCH REQUESTS TO USE NAMED FUNCTIONS ----------
+
+
+// Refactor the getLuke function to use:
+  // Named callback functions
+
+
+// Refactor the getCharacters function to use:
+  // Named callback functions
