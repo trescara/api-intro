@@ -4,6 +4,9 @@ const characterSection = document.querySelector('.characters')
 // Write a function that GETs information about Luke Skywalker
   // and add his name to the page
 getLuke()
+getCharacters()
+
+
 
 
 function getLuke() {
@@ -73,22 +76,74 @@ function getCharacters() {
       return response.json()
     })
     .then(function (people) {
-      // console.log(people)
+      console.log(people)
       // Write a loop
       var peopleArray = people.results
       for (var i = 0; i < peopleArray.length; i++) {
-
-        console.log(people.results[i]);
-
         var person = people.results[i]
+
         var name = person.name
-        var h3 = document.createElement('h3')
-        h3.textContent = name
-        characterSection.appendChild(h3)
+        var hairColor = person.hair_color
+        var height = person.height
+       
+        var html = `
+          <section>
+            <h3>${name}</h3>
+            <ul>
+              <li>Hair: ${hairColor}</li>
+              <li>Height: ${height}cm</li>
+            </ul>
+          </section>
+        `
+
+        characterSection.innerHTML += html
 
       }
+      var nextUrl = people.next
+      return nextUrl
+    })
+    .then(function(urlFromAPI) {
+      console.log('THEN URL', urlFromAPI)
+      // IMPLEMENT getMoreCharacters here
+
+      getMoreCharacters(urlFromAPI)
+
+
     })
 }
+
+// function getCharacters() {
+//   fetch(baseUrl + 'people')
+//     .then(function (response) {
+//       return response.json()
+//     })
+//     .then(function (people) {
+//       var peopleArray = people.results
+//       console.log(peopleArray)
+
+//       for (let i = 0; i < peopleArray.length; i++) {
+//         var person = people.results[i]
+
+//         // Assign attributes to variables
+//         var name = person.name
+//         var colorHair = person.hair_color
+//         var howTall = person.height
+
+//         var h3 = document.createElement('h3')
+//         h3.textContent = name
+
+//         var hairLI = document.createElement('li')
+//         var heightLI = document.createElement('li')
+//         hairLI.textContent = colorHair
+//         heightLI.textContent = howTall
+//         characterSection.prepend(h3)
+
+//         h3.appendChild(hairLI)
+//         h3.appendChild(heightLI)
+//       }
+//     })
+// }
+
 
 // Modify the getCharacters function to loop through the results
   // console.log each character in the array
@@ -99,6 +154,10 @@ function getCharacters() {
     // height
   // console.log each variable
 
+var myName = 'Matt'
+
+// console.log('Hello ' + myName + '.')
+// console.log(`Hello ${myName}.`)
 
 // Modify the getCharacters function to append a section for each character
   // Container element (<div> or <section>)
@@ -112,6 +171,18 @@ function getCharacters() {
   // Accepts a url as an input
   // Makes a fetch requests to that url
   // console.logs the result
+
+function getMoreCharacters(url) {
+
+  fetch(url)
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(people) {
+      console.log('From getMoreCharacters', people)
+      
+    })
+}
 
 
 // Refactor the getCharacters function to:
