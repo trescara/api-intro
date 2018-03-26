@@ -3,52 +3,40 @@ const characterSection = document.querySelector('.characters')
 
 // Write a function that GETs information about Luke Skywalker
   // and add his name to the page
+
 getLuke()
 getCharacters()
 
 
-
-
 function getLuke() {
-
   fetch(baseUrl + 'people/1')
-    .then(function(response) {
-      return response.json()
-    })
-    .then(function(data) {
-      // var name = data.name
-      // console.log(data)
+    .then(response => response.json())
+    .then(appendCharacters)
+}
 
-      // // Create an h2 that has the text of 
-      // // Luke's name
-      // var skywalker = document.createElement('h2')
-      // skywalker.innerText = name
+function appendCharacters(data) {
+  // Capture data from API in variables
+  var name = data.name
+  var colorHair = data.hair_color
+  var howTall = data.height
 
-      // // Append that h2 to the section
-      // // w/the class .characters
-      // characterSection.appendChild(skywalker)
-      var name = data.name
-      var colorHair = data.hair_color
-      var howTall = data.height
-      var skywalker = document.createElement('h2')
-      skywalker.innerText = name
+  // Create new DOM elements
+  var skywalker = document.createElement('h2')
+  var hairLi = document.createElement('li')
+  var heightLi = document.createElement('li')
 
-      var hairLi = document.createElement('li')
-      var heightLi = document.createElement('li')
-      hairLi.textContent = colorHair
-      heightLi.textContent = howTall
+  // Assign text content of new elements to data from API
+  skywalker.innerText = name
+  hairLi.textContent = colorHair
+  heightLi.textContent = howTall
 
-      var attributes = document.querySelector('.attributes')
+  // Select <ul> we want to append attributes to
+  var attributes = document.querySelector('.attributes')
 
-      // skywalker.innerText = colorHair
-      // skywalker.innerText = howTall
-      // console.log(skywalker)
-      characterSection.insertBefore(skywalker, attributes)
-      attributes.appendChild(hairLi)
-      attributes.appendChild(heightLi)
-
-    })
-
+  // Append new content to DOM
+  characterSection.insertBefore(skywalker, attributes)
+  attributes.appendChild(hairLi)
+  attributes.appendChild(heightLi)
 }
 
 // Modify the getLuke function to also add:
@@ -64,53 +52,9 @@ function getLuke() {
 
 
 // Write a function called getCharacters that:
-  // Makes a fetch request to the baseUrl + 'people/ endpoint
+  // Makes a fetch request to the baseUrl + 'people/' endpoint
   // console.log the resulting response
 
-// getCharacters()
-
-function getCharacters() {
-
-  fetch(baseUrl + 'people')
-    .then(function (response) {
-      return response.json()
-    })
-    .then(function (people) {
-      console.log(people)
-      // Write a loop
-      var peopleArray = people.results
-      for (var i = 0; i < peopleArray.length; i++) {
-        var person = people.results[i]
-
-        var name = person.name
-        var hairColor = person.hair_color
-        var height = person.height
-       
-        var html = `
-          <section>
-            <h3>${name}</h3>
-            <ul>
-              <li>Hair: ${hairColor}</li>
-              <li>Height: ${height}cm</li>
-            </ul>
-          </section>
-        `
-
-        characterSection.innerHTML += html
-
-      }
-      var nextUrl = people.next
-      return nextUrl
-    })
-    .then(function(urlFromAPI) {
-      console.log('THEN URL', urlFromAPI)
-      // IMPLEMENT getMoreCharacters here
-
-      getMoreCharacters(urlFromAPI)
-
-
-    })
-}
 
 // function getCharacters() {
 //   fetch(baseUrl + 'people')
@@ -144,6 +88,52 @@ function getCharacters() {
 //     })
 // }
 
+function getCharacters() {
+
+  fetch(baseUrl + 'people')
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(people) {
+      // Capture array we need to iterate over in a variable
+      var peopleArray = people.results
+      // Write a loop to iterate
+      for (var i = 0; i < peopleArray.length; i++) {
+        // Capture each 'character' in a variable
+        var person = people.results[i]
+
+        // Store data we want to use in variables
+        var name = person.name
+        var hairColor = person.hair_color
+        var height = person.height
+
+        // Build up a block of HTML and pump in our variables
+        var html = `
+          <section>
+            <h3>${name}</h3>
+            <ul>
+              <li>Hair: ${hairColor}</li>
+              <li>Height: ${height}cm</li>
+            </ul>
+          </section>
+        `
+        // Append each block of HTML to the page
+        characterSection.innerHTML += html
+      }
+      
+      // Capture the url to request the next 10 characters
+      var nextUrl = people.next
+      // Return the url so it can be passed on to the next part of the promise chain
+      return nextUrl
+    })
+    .then(function(nextUrl) {
+      // IMPLEMENT getMoreCharacters here
+      return getMoreCharacters(nextUrl)
+    })
+    .then(function(anotherUrl) {
+      getMoreCharacters(anotherUrl)
+    })
+}
 
 // Modify the getCharacters function to loop through the results
   // console.log each character in the array
@@ -165,6 +155,7 @@ var myName = 'Matt'
   // <ul> with  <li>s for hair color and height
   // Check out the innerHTML method
 
+
 // ---------- NESTED FETCH REQUESTS / PASSING DATA TO NEXT .THEN ----------
 
 // Write a function called getMoreCharacters that:
@@ -173,14 +164,35 @@ var myName = 'Matt'
   // console.logs the result
 
 function getMoreCharacters(url) {
-
-  fetch(url)
+  return fetch(url)
     .then(function(response) {
       return response.json()
     })
-    .then(function(people) {
-      console.log('From getMoreCharacters', people)
-      
+    .then(function(morePeople) {
+      console.log(morePeople)
+      var characters = morePeople.results
+      for (let i = 0; i < characters.length; i++) {
+        var person = characters[i]
+        var name = person.name
+        var hairColor = person.hair_color
+        var height = person.height
+
+        var html = `
+        <section>
+          <h3>${name}</h3>
+          <ul>
+            <li>Hair:${hairColor}</li>
+            <li>Height:${height}cm</li>
+          </ul>
+        </section>
+      `
+        characterSection.innerHTML += html
+      }
+
+      // Capture the url to request the next 10 characters
+      var nextUrl = morePeople.next
+      // Return the url so it can be passed on to the next part of the promise chain
+      return nextUrl
     })
 }
 
@@ -219,3 +231,17 @@ function getMoreCharacters(url) {
 
 // Refactor the getCharacters function to use:
   // Named callback functions
+
+
+
+// ---------- SIMPLE FAT ARROW REFACTOR EXAMPLE ----------
+
+// Anonymous function ES5:
+
+// function(data) {
+//   return data.next
+// }
+
+// Anonymous function ES6:
+
+// data => data.next
